@@ -12,7 +12,6 @@ const db = await open({
   driver: sqlite3.Database,
 });
 
-// create our 'messages' table (you can ignore the 'client_offset' column for now)
 await db.exec(`
   CREATE TABLE IF NOT EXISTS messages (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +36,6 @@ io.on("connection", async (socket) => {
   socket.on("chat message", async (msg, clientOffset, callback) => {
     let result;
     try {
-      // store the message in the database
       result = await db.run(
         "INSERT INTO messages (content, client_offset) VALUES (?, ?)",
         msg,
